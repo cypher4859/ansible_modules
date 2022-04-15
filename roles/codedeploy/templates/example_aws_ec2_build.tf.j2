@@ -1,0 +1,42 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
+provider "aws" {
+  region = "{{ aws_provider_region }}"
+  access_key  = "{{ aws_account_access_key }}"
+  secret_key  = "{{ aws_account_secret_key }}"
+}
+
+module "ec2_instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 3.0"
+
+  name = "{{ aws_ec2_instance_name }}"
+
+  ami                    = "{{ aws_ec2_ami }}"
+  instance_type          = "{{ aws_ec2_instance_type }}"
+  key_name               = "{{ aws_ec2_public_key_name }}"
+  monitoring             = true
+  vpc_security_group_ids = ["{{ aws_ec2_vpc_security_group_ids }}"]
+  subnet_id              = "{{ aws_ec2_subnet_id }}"
+  
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+output "instance_id" {
+  description = "ID of the EC2 instance"
+  value       = module.ec2_instance.id
+}
+
+output "instance_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = module.ec2_instance.public_ip
+}

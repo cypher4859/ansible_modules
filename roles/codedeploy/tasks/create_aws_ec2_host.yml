@@ -1,0 +1,68 @@
+---
+- name: "Setup requirements for using amazon sdk"
+  delegate_to: localhost
+  pip:
+    name:
+      - boto
+      - boto3
+
+- name: "Setup the EC2 Key Pair"
+  delegate_to: localhost
+  amazon.aws.ec2_key:
+    name: "{{ aws_ec2_public_key_name }}"
+    aws_access_key: "{{ aws_account_access_key }}"
+    aws_secret_key: "{{ aws_account_secret_key }}"
+    state: present
+    region: "{{ aws_provider_region }}"
+    key_material: "{{ lookup('file', '{{ aws_ec2_public_key_name }}') }}"
+  register: valid_ec2_key
+
+- name: Create the aws terraform file from template
+  delegate_to: localhost
+  template:
+    src: example_aws_ec2_build.tf.j2
+    dest: roles/codedeploy/files/terraform_project/main.tf
+    mode: "0755"
+
+- name: Init terraform
+  delegate_to: localhost
+  shell: terraform init
+  args:
+    chdir: roles/codedeploy/files/terraform_project/
+
+- name: Deploy the aws ec2 instance
+  delegate_to: localhost
+  check_mode: "{{ terraform_aws_dry_run }}"
+  terraform:
+    project_path: roles/codedeploy/files/terraform_project/
+    state: "{{ terraform_project_state }}"
+  register: terraform_output
+
+- name: Test Host Deployment
+  block:
+    - name: Record the outputs of the terraform job
+      delegate_to: localhost
+      set_fact:
+        host_aws_id: "{{ terraform_output.outputs.instance_id.value }}"
+        host_aws_public_ip: "{{ terraform_output.outputs.instance_public_ip.value }}"
+
+    - name: Add host to inventory
+      delegate_to: localhost
+      add_host:
+        name: "{{ host_aws_public_ip }}"
+        groups:
+          - aws_hosts
+        ansible_connection: ssh
+        ansible_user: ec2-user
+        ansible_ssh_private_key_file: "{{ aws_ec2_private_key_path }}"
+
+    ### WIP: Need to confirm that connection to instance works after creation.
+    # Then the provisioning role will work
+    - name: Connect and execute test command
+      delegate_to: "{{ host_aws_public_ip }}"
+      shell: echo "It's working!"
+      debugger: always
+      
+
+  when: terraform_project_state == "present"
+  
