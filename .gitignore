@@ -1,0 +1,17 @@
+create_host_and_deploy_code/roles/codedeploy/files/aws_test_key_pem.pem
+create_host_and_deploy_code/roles/codedeploy/files/aws_test_key_pem.pub
+create_host_and_deploy_code/roles/codedeploy/files/aws_test_key_rsa
+create_host_and_deploy_code/roles/codedeploy/files/aws_test_key_rsa.pub
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform.lock.hcl
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/main.tf
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/terraform.tfstate
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/terraform.tfstate.backup
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/modules/modules.json
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/providers/registry.terraform.io/hashicorp/aws/4.9.0/linux_amd64/terraform-provider-aws_v4.9.0_x5
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/providers/registry.terraform.io/kreuzwerker/docker/2.16.0/linux_amd64/CHANGELOG.md
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/providers/registry.terraform.io/kreuzwerker/docker/2.16.0/linux_amd64/LICENSE
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/providers/registry.terraform.io/kreuzwerker/docker/2.16.0/linux_amd64/README.md
+create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/providers/registry.terraform.io/kreuzwerker/docker/2.16.0/linux_amd64/terraform-provider-docker_v2.16.0
+create_host_and_deploy_code/test_docker_env/authorized_keys
+create_host_and_deploy_code/test_docker_env/basic_user_id_rsa
+create_host_and_deploy_code/test_docker_env/basic_user_id_rsa.pub
