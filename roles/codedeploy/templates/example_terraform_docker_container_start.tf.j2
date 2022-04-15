@@ -1,0 +1,23 @@
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "2.16.0"
+    }
+  }
+}
+
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
+}
+
+# Start a container
+resource "docker_container" "{{ terraform_docker_container_image }}" {
+  name  = "{{ terraform_docker_container_name }}"
+  image = docker_image.{{ terraform_docker_container_image }}.{{ terraform_docker_container_tag_version }}
+}
+
+# Find the latest Ubuntu precise image.
+resource "docker_image" "{{ terraform_docker_container_image }}" {
+  name = "{{ terraform_docker_container_image }}:{{ terraform_docker_container_tag_version }}"
+}

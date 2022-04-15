@@ -1,0 +1,24 @@
+---
+- name: Ensure git package is installed
+  apt:
+    name: git
+    state: present
+
+- name: Clone repo and/or make sure repo is up-to-date
+  git:
+    repo: "{{ git_repo_https_url }}"
+    dest: "{{ repo_destination_directory }}/{{ git_repo_name }}"
+
+- name:  Install Dependencies
+  script:
+    chdir: "{{ repo_destination_directory }}/{{ git_repo_name }}"
+    cmd: "{{ application_dependencies_file_name }}"
+
+- name: Transfer Application Initialization file to remote host
+  copy: 
+    src: "{{ application_initialization_script_name }}"
+    dest: "{{ repo_destination_directory }}/{{ git_repo_name }}/{{ application_initialization_script_name }}"
+    mode: "0755"
+
+- name: Execute Application Initialization File
+  shell: "(cd {{ repo_destination_directory }}/{{ git_repo_name }}; sh {{ application_initialization_script_name }} >/dev/null 2>&1 &)"

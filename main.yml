@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  pre_tasks:
+    - name: Install unzip
+      yum:
+        name: unzip
+        state: present
+  roles:
+    - role: diodonfrost.terraform
+
+- hosts: test_container
+  roles:
+    - role: codedeploy

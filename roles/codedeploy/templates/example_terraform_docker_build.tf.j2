@@ -1,0 +1,7 @@
+resource "docker_image" "{{ terraform_docker_build_image_name }}" {
+  name = "{{ terraform_docker_build_image_name }}"
+  build {
+    path = "{{ terraform_docker_build_image_path }}"
+    tag  = ["{{ terraform_docker_build_image_tag }}"]
+  }
+}
