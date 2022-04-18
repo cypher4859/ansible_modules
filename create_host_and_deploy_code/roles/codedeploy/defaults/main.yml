@@ -1,40 +1,42 @@
 ---
 # defaults file for code-deploy
-name_of_private_key_file: "id_rsa" # Keyfile for SSH capability. WIP
-git_clone_method: "ssh"
-git_method:
-  ssh: "ssh"
-  https: "https"
-git_repo_name: "medical-appointment-notifier" # CHANGE THIS to your repo
+
+# REQURED for the deploy_code role. This is not required in order to run the create_aws_ec2_host role
+name_of_private_key_file: "id_rsa" # REQUIRED - CHANGE THIS - Keyfile for SSH capability. WIP
+git_repo_name: "medical-appointment-notifier" # REQUIRED - CHANGE THIS -  to your repo
 git_repo_ssh_url: "git@github.com:cypher4859/medical-appointment-notifier.git" # CHANGE THIS to your SSH url for your git
-git_repo_https_url: "https://github.com/cypher4859/medical-appointment-notifier.git" # CHANGE THIS to your HTTPS url for your git
-repo_destination_directory: "/usr/share/." # CHANGE THIS to whatever destination directory you'd like
+git_repo_https_url: "https://github.com/cypher4859/medical-appointment-notifier.git" # REQUIRED - CHANGE THIS - to your HTTPS url for your git
+repo_destination_directory: "/usr/share/." # REQUIRED - CHANGE THIS -  to whatever destination directory you'd like
 resolve_dependencies: true # Will trigger the ansible tasks to execute a script file to resolve dependencies before the app initialization
-application_dependencies_file_name: "example_dependency_script.sh" # The .sh file that contians commands to resolve your app dependencies
-application_initialization_script_name: "example_initialization_script.sh" # This script file should execute your app code
+application_dependencies_file_name: "example_dependency_script.sh" # REQUIRED - CHANGE THIS - The .sh file that contians commands to resolve your app dependencies
+application_initialization_script_name: "example_initialization_script.sh" # REQUIRED - CHANGE THIS - This script file should execute your app code
 
-terraform_docker_build_image_name: ""
-terraform_docker_build_image_path: ""
-terraform_docker_build_image_tag: ""
-
-terraform_docker_container_image: "test_ansible_module_container" # CHANGE THIS to the image you'd like to use
-terraform_docker_container_name: "test_A"
-terraform_docker_container_tag_version: "latest"
+# COMMENTED OUT for the WIP docker technique
+# terraform_docker_build_image_name: ""
+# terraform_docker_build_image_path: ""
+# terraform_docker_build_image_tag: ""
+# terraform_docker_container_image: "test_ansible_module_container" # CHANGE THIS to the image you'd like to use
+# terraform_docker_container_name: "test_A"
+# terraform_docker_container_tag_version: "latest"
 
 terraform_aws_dry_run: false
 terraform_project_state: "present"
 
 aws_provider_region: "us-east-2"
-# Go to aws console, generate a new access key, copy those keys down
-aws_account_access_key: "AKIARO2CBLEW66YB4FOG"
-aws_account_secret_key: "T3b9LjE9juru1B+ek4WPDhUzrefqdRKEVsGa5Jzz"
+# Go to aws console -> generate new key -> set the access key and secret key to env var
+# e.g. AWS_ACCESS_KEY='asdkljeroijbk89379+asdkj', AWS_SECRET_KEY='asdjkloi930490273-012-08+390sjdl'
+aws_account_access_key_env_name: "AWS_ACCESS_KEY"
+aws_account_secret_key_env_name: "AWS_SECRET_KEY"
 
 aws_ec2_instance_name: "test_ec2_instance"
 aws_ec2_instance_type: "t2.micro"
-aws_ec2_private_key_name: "aws_test_key_pem.pem"
-aws_ec2_public_key_name: "aws_test_key_pem.pub"
-aws_ec2_private_key_path: "./roles/codedeploy/files/{{ aws_ec2_private_key_name }}"
 aws_ec2_ami: "ami-0c7478fd229861c57"
 aws_ec2_vpc_security_group_ids: "sg-695d9217"
 aws_ec2_subnet_id: "subnet-2b4a5e51"
+
+# The public/private key needs to be generated and added to the `roles/codedeploy/files/` and their names set below
+# REFER To the README.md for details on how to do this.
+aws_ec2_private_key_name: "aws_test_key_pem.pem"
+aws_ec2_public_key_name: "aws_test_key_pem.pub"
+aws_ec2_private_key_path: "./roles/codedeploy/files/{{ aws_ec2_private_key_name }}"
 

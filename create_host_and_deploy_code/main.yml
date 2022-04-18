@@ -2,12 +2,12 @@
 - hosts: localhost
   pre_tasks:
     - name: Install unzip
-      yum:
+      homebrew:
         name: unzip
         state: present
   roles:
     - role: diodonfrost.terraform
 
-- hosts: test_container
+- hosts: localhost
   roles:
     - role: codedeploy

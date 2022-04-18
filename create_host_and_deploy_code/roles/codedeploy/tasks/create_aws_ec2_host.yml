@@ -1,37 +1,33 @@
 ---
 - name: "Setup requirements for using amazon sdk"
-  delegate_to: localhost
   pip:
     name:
       - boto
       - boto3
 
 - name: "Setup the EC2 Key Pair"
-  delegate_to: localhost
   amazon.aws.ec2_key:
     name: "{{ aws_ec2_public_key_name }}"
-    aws_access_key: "{{ aws_account_access_key }}"
-    aws_secret_key: "{{ aws_account_secret_key }}"
+    aws_access_key: "{{ lookup('env', '{{ aws_account_access_key_env_name }}') }}"
+    aws_secret_key: "{{ lookup('env', '{{ aws_account_secret_key_env_name }}') }}"
     state: present
     region: "{{ aws_provider_region }}"
     key_material: "{{ lookup('file', '{{ aws_ec2_public_key_name }}') }}"
   register: valid_ec2_key
+  debugger: always
 
 - name: Create the aws terraform file from template
-  delegate_to: localhost
   template:
     src: example_aws_ec2_build.tf.j2
     dest: roles/codedeploy/files/terraform_project/main.tf
     mode: "0755"
 
 - name: Init terraform
-  delegate_to: localhost
   shell: terraform init
   args:
     chdir: roles/codedeploy/files/terraform_project/
 
 - name: Deploy the aws ec2 instance
-  delegate_to: localhost
   check_mode: "{{ terraform_aws_dry_run }}"
   terraform:
     project_path: roles/codedeploy/files/terraform_project/
@@ -41,13 +37,11 @@
 - name: Test Host Deployment
   block:
     - name: Record the outputs of the terraform job
-      delegate_to: localhost
       set_fact:
         host_aws_id: "{{ terraform_output.outputs.instance_id.value }}"
         host_aws_public_ip: "{{ terraform_output.outputs.instance_public_ip.value }}"
 
     - name: Add host to inventory
-      delegate_to: localhost
       add_host:
         name: "{{ host_aws_public_ip }}"
         groups:
@@ -59,10 +53,9 @@
     ### WIP: Need to confirm that connection to instance works after creation.
     # Then the provisioning role will work
     - name: Connect and execute test command
-      delegate_to: "{{ host_aws_public_ip }}"
+      delegate_to: aws_hosts
       shell: echo "It's working!"
       debugger: always
-      
 
   when: terraform_project_state == "present"
   

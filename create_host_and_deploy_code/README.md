@@ -5,7 +5,7 @@ This repo is a source for multiple ansible modules to be used as needed.
 ### Table of Contents
     . Roles
 
-#### How the role was created
+#### Anatomy of the Role
 The roles are created by using `ansible-galaxy` from the `roles/` directory to initialize a new role. Then we go into that initialized role and add in what we need. Here's the basic structure (@ is the root of this project):
     - `@/main.yml`: This is the main driver of the ansible tasks. This is the thing you execute against  
     - `@/hosts.yml`: This is the inventory of hosts that the role will target when it executes.  
@@ -16,12 +16,19 @@ The roles are created by using `ansible-galaxy` from the `roles/` directory to i
     - `@/roles/codedeploy/templates`: This contains the template files that we can use to create new files in our tasks and fill in certain areas of the templated file with our variables from `defaults/`  
 
 
+#### Variable File
+The file located at `roles/codedeploy/defaults/main.yml` is the primary variables file. You will need to go into this file an replace certain values with the values that fit your circumstance. A list follows of the values you will need to change in order to run the role.
+    - name_of_private_key_file
+    - 
+
+
 #### How Do I Execute this role?
 Make sure you're in the root of this project.
 
 Prerequisites:  
     - `ansible-galaxy collection install community.general`  
-    - `ansible-galaxy collection install amazon.aws`  
+    - `ansible-galaxy collection install amazon.aws`
+    - `ansible-galaxy install diodonfrost.terraform`
 
 Exec Command:  
 `ansible-playbook -i hosts.yml main.yml`

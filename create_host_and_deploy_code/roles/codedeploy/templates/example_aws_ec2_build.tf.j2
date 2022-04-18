@@ -8,8 +8,8 @@ terraform {
 
 provider "aws" {
   region = "{{ aws_provider_region }}"
-  access_key  = "{{ aws_account_access_key }}"
-  secret_key  = "{{ aws_account_secret_key }}"
+  access_key  = "{{ lookup('env', '{{ aws_account_access_key_env_name }}') }}"
+  secret_key  = "{{ lookup('env', '{{ aws_account_secret_key_env_name }}') }}"
 }
 
 module "ec2_instance" {
