@@ -2,7 +2,7 @@
 - hosts: localhost
   pre_tasks:
     - name: Install unzip
-      homebrew:
+      package:
         name: unzip
         state: present
   roles:

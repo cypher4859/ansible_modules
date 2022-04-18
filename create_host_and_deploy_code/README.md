@@ -19,22 +19,42 @@ The roles are created by using `ansible-galaxy` from the `roles/` directory to i
 #### Variable File
 The file located at `roles/codedeploy/defaults/main.yml` is the primary variables file. You will need to go into this file an replace certain values with the values that fit your circumstance. A list follows of the values you will need to change in order to run the role.
     - name_of_private_key_file
-    - 
+    - git_repo_name
+    - git_repo_https_url
+    - repo_destination_directory
+    - application_dependencies_file_name
+    - application_initialization_script_name
+    - aws_provider_region
+    - aws_ec2_instance_name
+    - aws_ec2_instance_type
+    - aws_ec2_ami
+    - aws_ec2_vpc_security_group_ids
+    - aws_ec2_subnet_id
+    - aws_ec2_private_key_name
+    - aws_ec2_public_key_name
 
+*NOTE*: Changing your `aws_ec2_public_key_name` and `aws_ec2_private_key_name`.
+You will need to do a `ssh-keygen -m PEM` to generate the keypair locally OR generate the keypair on AWS console -> download the keys -> put them in the `/roles/codedeploy/files/` -> set the `aws_ec2_public_key_name` and private equivalent to reference your newly downloaded keys
+
+Will require the following ENV Vars set in the host you're running ansible from (probably your own computer):
+    - AWS_ACCESS_KEY='someAccessKeyYouGotFromAWS'
+    - AWS_SECRET_KEY='somePrivateSecretKeyYouGotFromAWS'
+    - ANSIBLE_HOST_KEY_CHECKING=false
 
 #### How Do I Execute this role?
 Make sure you're in the root of this project.
 
-Prerequisites:  
-    - `ansible-galaxy collection install community.general`  
-    - `ansible-galaxy collection install amazon.aws`
+Prerequisites:
+    - Do the above steps related to setting the [Variable File](#variable-file)
+    - Ensure that the security rules for the security group you're referencing allow SSH
+    - `ansible-galaxy collection install community.general amazon.aws`  
     - `ansible-galaxy install diodonfrost.terraform`
 
 Exec Command:  
 `ansible-playbook -i hosts.yml main.yml`
 
 #### Random Notes
-Make sure that your security group rules for the instance allow you to connect to the instance.
+Make sure that your security group rules for the instance allow you to connect to the instance. 
 
 Make sure that your private key is in pem format. `ssh-keygen -m PEM`
 

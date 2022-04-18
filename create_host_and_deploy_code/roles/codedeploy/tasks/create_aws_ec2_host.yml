@@ -55,10 +55,5 @@
       delegate_to: "{{ host_aws_public_ip }}"
       wait_for_connection:
         timeout: 120
-
-    - name: Connect and execute test command
-      delegate_to: "{{ host_aws_public_ip }}"
-      shell: echo "It's working!"
-      register: result
   when: terraform_project_state == "present"
   
