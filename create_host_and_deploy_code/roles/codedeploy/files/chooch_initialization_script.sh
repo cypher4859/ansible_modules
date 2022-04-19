@@ -1,0 +1,1 @@
+bash -c "$(curl http://get.chooch.ai/v5-setup)" -k "<insert API key>"
