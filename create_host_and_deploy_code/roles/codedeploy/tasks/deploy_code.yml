@@ -16,12 +16,20 @@
         dest: "{{ code_repo_destination_directory }}/{{ code_repo_name }}"
   when: use_git
 
+- name: Ensure directory for code repo exists
+  become: true
+  delegate_to: "{{ host_aws_public_ip }}"
+  file:
+    path: "{{ code_repo_destination_directory }}/{{ code_repo_name }}"
+    state: directory
+
 - name:  Install Dependencies
   become: true
   delegate_to: "{{ host_aws_public_ip }}"
   script:
     chdir: "{{ code_repo_destination_directory }}/{{ code_repo_name }}"
     cmd: "{{ application_dependencies_file_name }}"
+  when: resolve_dependencies
 
 - name: Transfer Application Initialization file to remote host
   become: true
