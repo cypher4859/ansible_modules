@@ -9,6 +9,10 @@ This repo is a source for multiple ansible modules to be used as needed.
     - [Executing the Role](#how-do-i-execute-this-role)
 
 ### Code Deploy Role
+**Synopsis**:  
+This role is designed to build out a host on an AWS EC2 instance and deploy custom code to the host. There is some work in progress to do this with a docker container as well.
+
+
 #### Anatomy of the Role
 The roles are created by using `ansible-galaxy` from the `roles/` directory to initialize a new role. Then we go into that initialized role and add in what we need. Here's the basic structure (@ is the root of this project):
 - `@/main.yml`: This is the main driver of the ansible tasks. This is the thing you execute against  
