@@ -1,23 +1,26 @@
 ---
-- name: Ensure git package is installed
-  become: true
-  delegate_to: "{{ host_aws_public_ip }}"
-  package:
-    name: git
-    state: present
+- name: Retrieve code via Git
+  block:
+    - name: Ensure git package is installed
+      become: true
+      delegate_to: "{{ host_aws_public_ip }}"
+      package:
+        name: git
+        state: present
 
-- name: Clone repo and/or make sure repo is up-to-date
-  become: true
-  delegate_to: "{{ host_aws_public_ip }}"
-  git:
-    repo: "{{ git_repo_https_url }}"
-    dest: "{{ repo_destination_directory }}/{{ git_repo_name }}"
+    - name: Clone repo and/or make sure repo is up-to-date
+      become: true
+      delegate_to: "{{ host_aws_public_ip }}"
+      git:
+        repo: "{{ git_repo_https_url }}"
+        dest: "{{ code_repo_destination_directory }}/{{ code_repo_name }}"
+  when: use_git
 
 - name:  Install Dependencies
   become: true
   delegate_to: "{{ host_aws_public_ip }}"
   script:
-    chdir: "{{ repo_destination_directory }}/{{ git_repo_name }}"
+    chdir: "{{ code_repo_destination_directory }}/{{ code_repo_name }}"
     cmd: "{{ application_dependencies_file_name }}"
 
 - name: Transfer Application Initialization file to remote host
@@ -25,10 +28,10 @@
   delegate_to: "{{ host_aws_public_ip }}"
   copy: 
     src: "{{ application_initialization_script_name }}"
-    dest: "{{ repo_destination_directory }}/{{ git_repo_name }}/{{ application_initialization_script_name }}"
+    dest: "{{ code_repo_destination_directory }}/{{ code_repo_name }}/{{ application_initialization_script_name }}"
     mode: "0755"
 
 - name: Execute Application Initialization File
   become: true
   delegate_to: "{{ host_aws_public_ip }}"
-  shell: "(cd {{ repo_destination_directory }}/{{ git_repo_name }}; sh {{ application_initialization_script_name }} >/dev/null 2>&1 &)"
+  shell: "(cd {{ code_repo_destination_directory }}/{{ code_repo_name }}; sh {{ application_initialization_script_name }} >/dev/null 2>&1 &)"
