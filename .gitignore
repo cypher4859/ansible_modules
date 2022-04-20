@@ -15,3 +15,4 @@ create_host_and_deploy_code/roles/codedeploy/files/terraform_project/.terraform/
 create_host_and_deploy_code/test_docker_env/authorized_keys
 create_host_and_deploy_code/test_docker_env/basic_user_id_rsa
 create_host_and_deploy_code/test_docker_env/basic_user_id_rsa.pub
+create_host_and_deploy_code/roles/codedeploy/defaults/.env
