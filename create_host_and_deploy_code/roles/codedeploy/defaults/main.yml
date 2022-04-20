@@ -5,10 +5,10 @@
 name_of_private_key_file: "id_rsa" # REQUIRED - CHANGE THIS - Keyfile for SSH capability. WIP
 
 code_repo_destination_directory: "/usr/share/." # REQUIRED - CHANGE THIS -  to whatever destination directory you'd like
-code_repo_name: "medical-appointment-notifier" # REQUIRED - CHANGE THIS to the git repo or name of directory where you'd like the code to sit
+code_repo_name: "simple-nodejs-server" # REQUIRED - CHANGE THIS to the git repo or name of directory where you'd like the code to sit
 
 use_git: true
-git_repo_https_url: "https://github.com/cypher4859/medical-appointment-notifier.git" # REQUIRED - CHANGE THIS - to your HTTPS url for your git
+git_repo_https_url: "https://github.com/alinebastos/simple-nodejs-server.git" # REQUIRED - CHANGE THIS - to your HTTPS url for your git
 
 resolve_dependencies: true # Will trigger the ansible tasks to execute a script file to resolve dependencies before the app initialization
 application_dependencies_file_name: "example_dependency_script.sh" # REQUIRED - CHANGE THIS - The .sh file that contians commands to resolve your app dependencies
