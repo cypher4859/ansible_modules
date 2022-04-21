@@ -1,0 +1,14 @@
+[Unit]
+Description={{ code_service_description }}
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{ application_initialization_script_name }} {{ app_init_extra_vars }}
+ExecStop=/bin/kill -WINCH ${MAINPID}
+KillSignal=SIGCONT
+PrivateTmp=true
+Enabled=
+
+[Install]
+WantedBy=multi-user.target

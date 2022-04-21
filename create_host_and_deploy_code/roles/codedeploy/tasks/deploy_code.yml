@@ -39,7 +39,24 @@
     dest: "{{ code_repo_destination_directory }}/{{ code_repo_name }}/{{ application_initialization_script_name }}"
     mode: "0755"
 
+- name: Create the service file from the template
+  template:
+    src: "code_service.j2"
+    dest: roles/codedeploy/files/{{ code_service_file_name }}
+    mode: "0664"
+
+- name: Transfer the service file to the host
+  become: true
+  delegate_to: "{{ host_aws_public_ip }}"
+  copy: 
+    src: "roles/codedeploy/files/{{ code_service_file_name }}"
+    dest: "/etc/systemd/system/{{ code_service_file_name }}"
+    mode: "0664"
+
 - name: Execute Application Initialization File
   become: true
   delegate_to: "{{ host_aws_public_ip }}"
-  shell: "(cd {{ code_repo_destination_directory }}/{{ code_repo_name }}; sh {{ application_initialization_script_name }} >/dev/null 2>&1 &)"
+  service:
+    name: "{{ code_service_name }}"
+    state: started
+    enabled: yes
