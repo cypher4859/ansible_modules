@@ -95,14 +95,16 @@ If you would like to deploy code onto the host then you're going to need to set 
 Make sure you're in the root of this project.
 
 Prerequisites:  
-- Do the above steps related to setting the [Variable File](#variable-file)  
-- Ensure that the security rules for the security group you're referencing allow SSH  
-- Run from your ansible host (wherever you're running ansible-playbook from) `ansible-galaxy collection install community.general amazon.aws`  
-- Run from your ansible host `ansible-galaxy install diodonfrost.terraform`  
-
+1. Ensure that you are either passing in the right variables or you have changed the defaults set in [Variable File](#variable-file)  
+2. (AWS) Ensure that the security rules for the security group you're referencing allow SSH  
+3. Execute the prepare script located at `prepare_host.sh`
+```sh
+$ chmod +x prepare_host.sh
+$ prepare_host.sh
+```
 Exec Command:  
 ```sh
-$ ansible-playbook -i hosts.yml main.yml
+$ ansible-playbook main.yml
 ```
 
 ### Examples
