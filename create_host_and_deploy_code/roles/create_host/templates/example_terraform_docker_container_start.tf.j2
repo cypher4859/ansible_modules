@@ -9,19 +9,33 @@ terraform {
 
 provider "docker" {
   host = "unix:///var/run/docker.sock"
+
+  {% if terraform_docker_image_registry %}
+  registry_auth {
+    address = "registry.hub.docker.com"
+  }
+  {% endif %}
 }
+
+{% if not terraform_docker_image_registry %}
+# Find the latest image LOCALLY.
+resource "docker_image" "{{ terraform_docker_container_image }}" {
+  name = "{{ terraform_docker_container_image }}:{{ terraform_docker_container_tag_version }}"
+}
+{% endif %}
+
+# Find the image on registry.
+{% if terraform_docker_image_registry %}
+data "docker_registry_image" "{{ terraform_docker_container_image }}" {
+  name = "{{ terraform_docker_image_registry }}/{{ terraform_docker_container_image }}:{{ terraform_docker_container_tag_version }}"
+}
+{% endif %}
 
 # Start a container
 resource "docker_container" "{{ terraform_docker_container_image }}" {
   name  = "{{ terraform_docker_container_name }}"
-  image = docker_image.{{ terraform_docker_container_image }}.{{ terraform_docker_container_tag_version }}
-  command = {{ terraform_docker_container_cmd | to_json }}
+  image = "${ {% if terraform_docker_image_registry %}data.docker_registry_{% else %}docker_{% endif %}image.{{ terraform_docker_container_image }}.{% if terraform_docker_image_registry %}name{% else %}{{ terraform_docker_container_tag_version }}{% endif %} }"
 {% for property in terraform_docker_extra_properties %}
   {{ property['key'] }} {% if not property['nested'] %}= {% endif %}{{ property['value'] }}
 {% endfor %}
-}
-
-# Find the latest Ubuntu precise image.
-resource "docker_image" "{{ terraform_docker_container_image }}" {
-  name = "{{ terraform_docker_container_image }}:{{ terraform_docker_container_tag_version }}"
 }

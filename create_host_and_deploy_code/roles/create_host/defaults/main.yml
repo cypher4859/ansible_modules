@@ -1,6 +1,5 @@
 ---
 # defaults file for create_host
-# COMMENTED OUT for the WIP docker technique
 create_host_options:
   use_docker: "docker"
   use_aws: "aws"
@@ -8,6 +7,7 @@ create_host_options:
 
 create_host_mode: "{{ create_host_options['use_docker'] }}"
 
+terraform_docker_image_registry: ""
 terraform_docker_container_image: "centos" # CHANGE THIS to the image you'd like to use
 terraform_docker_container_name: "centos_test_deploy_image"
 terraform_docker_container_tag_version: "latest"
