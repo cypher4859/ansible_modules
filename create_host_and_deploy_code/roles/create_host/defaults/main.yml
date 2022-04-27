@@ -12,6 +12,15 @@ terraform_docker_container_image: "centos" # CHANGE THIS to the image you'd like
 terraform_docker_container_name: "centos_test_deploy_image"
 terraform_docker_container_tag_version: "latest"
 terraform_docker_container_cmd: ["sleep", "400"]
+terraform_docker_extra_properties:
+  - example_property:
+    key: "ports"
+    value: "{ internal = 22 }"
+    nested: true
+  - another_ex_property:
+    key: "env"
+    value: "[\"DEBUG=0\"]"
+    nested: false
 
 terraform_aws_dry_run: false
 terraform_project_state: "present"
