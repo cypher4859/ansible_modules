@@ -21,6 +21,10 @@ terraform_docker_extra_properties:
     key: "env"
     value: "[\"DEBUG=0\"]"
     nested: false
+  - example_command:
+    key: "command"
+    value: "{{ terraform_docker_container_cmd | to_json }}"
+    nested: false
 
 terraform_aws_dry_run: false
 terraform_project_state: "present"
