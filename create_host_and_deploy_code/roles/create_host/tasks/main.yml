@@ -1,0 +1,9 @@
+---
+# tasks file for create_host
+- name: Create a docker container
+  import_tasks: create_docker_host.yml
+  when: create_host_mode == create_host_options['use_docker']
+
+- name: Create an AWS EC2 isntance
+  import_tasks: create_aws_ec2_host.yml
+  when: create_host_mode == create_host_options['use_aws']

@@ -1,0 +1,37 @@
+---
+# defaults file for create_host
+# COMMENTED OUT for the WIP docker technique
+create_host_options:
+  use_docker: "docker"
+  use_aws: "aws"
+  none: "none"
+
+create_host_mode: "{{ create_host_options['use_docker'] }}"
+
+terraform_docker_container_image: "centos" # CHANGE THIS to the image you'd like to use
+terraform_docker_container_name: "centos_test_deploy_image"
+terraform_docker_container_tag_version: "latest"
+terraform_docker_container_cmd: ["sleep", "400"]
+
+terraform_aws_dry_run: false
+terraform_project_state: "present"
+
+aws_provider_region: "us-east-2" # REQUIRED - CHANGE THIS - Set to your desired region
+# The following are the names of the env variables
+# Go to aws console -> generate new key -> set the access key and secret key to env var
+# e.g. export AWS_ACCESS_KEY='asdkljeroijbk89379+asdkj'; export AWS_SECRET_KEY='asdjkloi930490273-012-08+390sjdl'
+aws_account_access_key_env_name: "AWS_ACCESS_KEY"
+aws_account_secret_key_env_name: "AWS_SECRET_KEY"
+
+aws_ec2_instance_name: "test_ec2_instance" # REQUIRED - CHANGE THIS - Set to name of your instance
+aws_ec2_instance_type: "t2.micro" # REQUIRED - CHANGE THIS - Set to your desired instance type
+aws_ec2_ami: "ami-0c7478fd229861c57" # REQUIRED - CHANGE THIS - Set to your desired AMI
+aws_ec2_vpc_security_group_ids: "sg-695d9217" # REQUIRED - CHANGE THIS - Set to an existing VPC security group
+aws_ec2_subnet_id: "subnet-2b4a5e51" # REQUIRED - CHANGE THIS - Set to your desired subnet, part of same VPC that your SecGroup refers to
+
+# The public/private key needs to be generated and added to the `roles/codedeploy/files/` and their names set below
+# REFER To the README.md for details on how to do this.
+aws_ec2_private_key_name: "aws_test_key_pem.pem" # REQUIRED - CHANGE THIS
+aws_ec2_public_key_name: "aws_test_key_pem.pub" # REQUIRED - CHANGE THIS
+aws_ec2_private_key_path: "./roles/create_host/files/{{ aws_ec2_private_key_name }}"
+

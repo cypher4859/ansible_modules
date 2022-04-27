@@ -10,4 +10,4 @@
 
 - hosts: localhost
   roles:
-    - role: codedeploy
+    - role: create_host
