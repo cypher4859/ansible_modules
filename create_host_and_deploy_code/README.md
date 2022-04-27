@@ -99,12 +99,12 @@ Prerequisites:
 2. (AWS) Ensure that the security rules for the security group you're referencing allow SSH  
 3. Execute the prepare script located at `prepare_host.sh`
 ```sh
-$ chmod +x prepare_host.sh
-$ prepare_host.sh
+chmod +x prepare_host.sh
+prepare_host.sh
 ```
 Exec Command:  
 ```sh
-$ ansible-playbook main.yml
+ansible-playbook main.yml
 ```
 
 ### Examples
