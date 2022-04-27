@@ -1,19 +1,22 @@
 ---
+# - name: Install Docker
+#   shell: cd ~ && curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
+
 - name: Create the docker container start file from template
   delegate_to: localhost
   template:
     src: example_terraform_docker_container_start.tf.j2
-    dest: roles/codedeploy/files/terraform_project/main.tf
+    dest: roles/create_host/files/terraform_project/main.tf
     mode: "0755"
 
 - name: Init terraform
   delegate_to: localhost
   shell: terraform init
   args:
-    chdir: roles/codedeploy/files/terraform_project/
+    chdir: roles/create_host/files/terraform_project/
 
 - name: Deploy the docker container
   delegate_to: localhost
   terraform:
-    project_path: roles/codedeploy/files/terraform_project/
+    project_path: roles/create_host/files/terraform_project/
     state: present

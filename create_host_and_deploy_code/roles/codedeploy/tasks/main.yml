@@ -1,8 +1,0 @@
-
-
-- name: Create the host to deploy code
-  import_tasks: create_aws_ec2_host.yml
-  # import_tasks: create_docker_host.yml
-
-- name: Primary driver task for code-deploy
-  import_tasks: deploy_code.yml

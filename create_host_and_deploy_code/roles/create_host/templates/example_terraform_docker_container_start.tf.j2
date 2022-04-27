@@ -15,6 +15,7 @@ provider "docker" {
 resource "docker_container" "{{ terraform_docker_container_image }}" {
   name  = "{{ terraform_docker_container_name }}"
   image = docker_image.{{ terraform_docker_container_image }}.{{ terraform_docker_container_tag_version }}
+  command = {{ terraform_docker_container_cmd | to_json }}
 }
 
 # Find the latest Ubuntu precise image.
