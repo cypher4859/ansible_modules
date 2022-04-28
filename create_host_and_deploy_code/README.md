@@ -4,9 +4,11 @@ This repo is a source for multiple ansible modules to be used as needed.
 
 ## Table of Contents  
 - [Code Deploy](#code-deploy-role)
-    - [Anatomy of Code Deploy](#anatomy-of-the-role)
-    - [Configure Variable File](#variable-file)
-    - [Executing the Role](#how-do-i-execute-this-role)
+    - [Getting Started](#getting-started)
+    - [Configuration](#configuration)
+        - [Anatomy of Code Deploy](#anatomy-of-the-role)
+        - [Configure Variable File](#variable-file)
+        - [Executing the Role](#how-do-i-execute-this-role)
     - [Examples](#examples)
 
 ### Code Deploy Role
@@ -14,6 +16,17 @@ This repo is a source for multiple ansible modules to be used as needed.
 This ansible role is designed to build out a host on either an AWS EC2 instance or a docker container and deploy custom code to the host. You can choose to either build out the host standalone or to build the host and deploy code on it.
 
 
+### Getting Started
+```sh
+# Install git on the host you're using
+git clone https://github.com/cypher4859/ansible_modules.git
+cd ansible_modules
+chmod +x prepare_host.sh
+prepare_host.sh
+ansible-playbook main.yml
+```
+---
+## Configuration
 #### Anatomy of the Role
 The roles are created by using `ansible-galaxy` from the `roles/` directory to initialize a new role. Then we go into that initialized role and add in what we need. Here's the basic structure (@ is the root of this project):
 - `@/main.yml`: This is the main driver of the ansible tasks. This is the thing you execute against  
@@ -106,8 +119,8 @@ Exec Command:
 ```sh
 ansible-playbook main.yml
 ```
-
-### Examples
+---
+## Examples
 1. Create a docker container host based on an image from specific repo (using the senaite repo as example):
 ```sh
 ansible-playbook create_host_and_deploy_code/main.yml --extra-vars '{"create_host_mode": "docker", "terraform_docker_image_registry": "senaite", "terraform_docker_container_image": "senaite", "terraform_docker_container_name": "senaite_example", "terraform_docker_container_tag_version": "edge"}'
